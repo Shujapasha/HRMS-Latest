@@ -64,7 +64,7 @@ class UserController extends Controller
             $validator        = \Validator::make(
                 $request->all(), [
                                    'name' => 'required',
-                                   'email' => 'required|unique:users',
+                                   'email' => 'required|unique:hrm_users',
                                    'password' => 'required',
                                ]
             );
@@ -138,7 +138,7 @@ class UserController extends Controller
         $validator = \Validator::make(
             $request->all(), [
                                'name' => 'required',
-                               'email' => 'unique:users,email,' . $id,
+                               'email' => 'unique:hrm_users,email,' . $id,
                            ]
         );
         if($validator->fails())
@@ -232,7 +232,7 @@ class UserController extends Controller
         $validator = \Validator::make(
             $request->all(), [
                                'name' => 'required|max:120',
-                               'email' => 'required|email|unique:users,email,' . $userDetail['id'],
+                               'email' => 'required|email|unique:hrm_users,email,' . $userDetail['id'],
                                'profile' => 'image|mimes:jpeg,png,jpg,svg|max:3072',
                            ]
         );

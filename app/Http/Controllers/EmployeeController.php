@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use DB;
 use App\Models\Branch;
 use App\Models\Department;
 use App\Models\Designation;
@@ -85,15 +85,17 @@ class EmployeeController extends Controller
                                    'gender' => 'required',
                                    'phone' => 'required',
                                    'address' => 'required',
-                                   'email' => 'required|unique:users',
+                                   'email' => 'required|unique:hrm_users',
                                    'password' => 'required',
                                    'department_id' => 'required',
                                    'designation_id' => 'required',
                                    'document.*' => 'mimes:jpeg,png,jpg,gif,svg,pdf,doc,zip|max:20480',
                                ]
             );
+
             if($validator->fails())
             {
+
                 $messages = $validator->getMessageBag();
 
                 return redirect()->back()->withInput()->with('error', $messages->first());
@@ -148,7 +150,29 @@ class EmployeeController extends Controller
                     'created_by' => \Auth::user()->creatorId(),
                 ]
             );
-          //  dd($employee->id);
+
+
+            $oldrec = DB::table('journal_entries')->orderBy('journal_id', 'DESC')->first();  
+            $newjournalid   =   ($oldrec->journal_id+1); 
+            $data = array(
+                'date'          => date('Y-m-d'),
+                'reference'     => 0,
+                'description'   => 0,
+                'journal_id'    => $newjournalid,
+                'created_by'    => 2,
+                'created_at'    => date('Y-m-d h:i:s'),
+                'updated_at'    => date('Y-m-d h:i:s'),
+                'admission_id'  => 0,
+                'class_id'      => 0,
+                'accounts_reg'  => 0,
+                'student_id'    => $employee->id,
+                'invoice_id'    => 0,
+                'vouchertype'   => 'JUR',
+                'entry_userID'  =>  $employee->id,
+                'entry_type'    => 'employee',
+            );
+            DB::table('journal_entries')->insert($data);
+
             if($request->hasFile('document'))
             {
                 foreach($request->document as $key => $document)

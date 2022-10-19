@@ -478,7 +478,7 @@ class JobApplicationController extends Controller
                                'gender' => 'required',
                                'phone' => 'required',
                                'address' => 'required',
-                               'email' => 'required|unique:users',
+                               'email' => 'required|unique:hrm_users',
                                'password' => 'required',
                                'department_id' => 'required',
                                'designation_id' => 'required',

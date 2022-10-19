@@ -10,6 +10,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    protected $table = 'hrm_users';
     use Notifiable;
     use HasRoles;
 
